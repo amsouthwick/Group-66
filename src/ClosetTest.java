@@ -21,7 +21,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author Armaan
  * @version 2026.10.11
  */
-class ClosetTest {
+class ClosetTest
+{
     private Closet closet;
 
     private Sneaker sneaker1;

@@ -1,17 +1,49 @@
 import java.util.Scanner;
+/**
+ *  Virginia Tech Honor Code Pledge:
+ *  //
+// As a Hokie, I will conduct myself with honor and integrity at all times.
+// I will not lie, cheat, or steal, nor will I accept the actions of those who
+// do.
+// -- Ari Gallo (arig21)
 
+// LLM Statement:
+// I have not used any assistance for the assignment beyond course resources and
+// staff.
+ */
+
+/**
+ *  FitCheck app that utilizes a scanner for user input
+ * 
+ *  @author amria
+ *  @version Oct 12, 2026
+ */
 public class FitCheckApp {
     private Scanner scanner = new Scanner(System.in);
     private Closet closet = new Closet();
     private WeeklyPlan weeklyPlan = new WeeklyPlan();
-
+    /**
+     * 
+     */
     public FitCheckApp() {
         closet.addSneaker(new Sneaker("Adidas", "Samba", "Black", "Casual"));
         closet.addSneaker(new Sneaker("Nike", "Air Force 1", "White", "Casual"));
+        closet.addSneaker(new Sneaker("Jordan", "Air Jordan 4", "Military Black", "Streetwear"));
+        closet.addSneaker(new Sneaker("New Balance", "9060", "Sea Salt", "Casual"));
+        closet.addSneaker(new Sneaker("Adidas", "Ultraboost", "Black", "Athletic"));
+        closet.addSneaker(new Sneaker("Nike", "Air Max 95", "Triple Black", "Going Out"));
+        closet.addSneaker(new Sneaker("Timberland", "6-Inch Premium Boots", "Wheat", "Streetwear"));
+        closet.addOutfit(new Outfit("Streetwear Fit", "Black", "Going Out", "Streetwear"));
+        closet.addOutfit(new Outfit("Running Fit", "Blue", "Gym", "Athletic"));
+        closet.addOutfit(new Outfit("Business Casual", "Beige", "Presentation", "Formal"));
+        closet.addOutfit(new Outfit("Weekend Fit", "White", "Weekend", "Casual"));
+        closet.addOutfit(new Outfit("Night Out Fit", "Black", "Party", "Going Out"));
         closet.addOutfit(new Outfit("Class Outfit", "Black", "Class", "Casual"));
         closet.addOutfit(new Outfit("Gym Outfit", "Gray", "Gym", "Athletic"));
     }
-
+    /**
+     * Runs the FitCheck application and displays the main menu.
+     */
     public void run() {
         int choice;
         do {
@@ -31,7 +63,12 @@ public class FitCheckApp {
             }
         } while (choice != 5);
     }
-
+    /**
+     * Reads the user's menu selection and ensures it is
+     * a valid number between 1 and 5.
+     *
+     * @return the user's valid menu choice
+     */
     public int readMenuChoice() {
         return readNumber("Choose (1-5): ", 1, 5);
     }
@@ -52,7 +89,10 @@ public class FitCheckApp {
             System.out.println("Please enter a number from " + min + " to " + max + ".");
         }
     }
-
+    /**
+     * Displays all sneakers and outfits currently stored
+     * in the closet, along with their corresponding numbers.
+     */
     public void viewCloset() {
         System.out.println("\nSneakers:");
         int sneakerCount = closet.getSneakers().size();
@@ -81,7 +121,11 @@ public class FitCheckApp {
         String name = day.name().toLowerCase();
         return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
-
+    /**
+     * Allows the user to create or update a fit for a
+     * selected day of the week by choosing a sneaker
+     * and outfit from the closet.
+     */
     public void buildOrChangePlan() {
         if (closet.getSneakers().isEmpty() || closet.getOutfits().isEmpty()) {
             System.out.println("Add sneakers and outfits before planning.");
@@ -115,7 +159,11 @@ public class FitCheckApp {
             System.out.println("Cleared " + formatDay(day) + ".");
         }
     }
-
+    /**
+     * Starts the FitCheck application.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         new FitCheckApp().run();
     }
