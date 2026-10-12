@@ -25,7 +25,6 @@ public class FitCheckAppTest {
         System.setOut(originalOutput);
     }
 
-    // Pretend that the user typed the given lines into the console.
     private FitCheckApp createApp(String input) {
         System.setIn(new ByteArrayInputStream(input.getBytes()));
         return new FitCheckApp();
@@ -91,15 +90,20 @@ public class FitCheckAppTest {
     public void testViewWeeklyPlanThroughMenu() {
         FitCheckApp app = createApp("2\n1\n1\n1\n3\n5\n");
         app.run();
-        assertTrue(output.toString().contains("Saved Monday's fit."));
-        assertTrue(output.toString().contains("Goodbye!"));
+        String result = output.toString();
+        assertTrue(result.contains("Saved Monday's fit."));
+        assertTrue(result.contains("MONDAY: Sneaker:"));
+        assertTrue(result.contains("Samba"));
+        assertTrue(result.contains("Class Outfit"));
     }
 
     @Test
     public void testClearDayThroughMenu() {
-        FitCheckApp app = createApp("4\n2\n1\n5\n");
+        FitCheckApp app = createApp("2\n1\n1\n1\n4\n2\n1\n3\n5\n");
         app.run();
-        assertTrue(output.toString().contains("Cleared Monday."));
+        String result = output.toString();
+        assertTrue(result.contains("Cleared Monday."));
+        assertTrue(result.contains("MONDAY: No fit planned"));
     }
 
     @Test

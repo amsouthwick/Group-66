@@ -69,12 +69,17 @@ public class FitCheckApp {
         }
     }
 
-    private String chooseDay() {
-        String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    private Day chooseDay() {
+        Day[] days = Day.values();
         for (int i = 0; i < days.length; i++) {
-            System.out.println((i + 1) + ". " + days[i]);
+            System.out.println((i + 1) + ". " + formatDay(days[i]));
         }
         return days[readNumber("Choose day (1-5): ", 1, 5) - 1];
+    }
+
+    private String formatDay(Day day) {
+        String name = day.name().toLowerCase();
+        return name.substring(0, 1).toUpperCase() + name.substring(1);
     }
 
     public void buildOrChangePlan() {
@@ -82,7 +87,7 @@ public class FitCheckApp {
             System.out.println("Add sneakers and outfits before planning.");
             return;
         }
-        String day = chooseDay();
+        Day day = chooseDay();
         viewCloset();
         int sneakerNumber = readNumber("Sneaker number: ", 1, closet.getSneakers().size());
         int outfitNumber = readNumber("Outfit number: ", 1, closet.getOutfits().size());
@@ -90,7 +95,7 @@ public class FitCheckApp {
             Sneaker sneaker = closet.getSneaker(sneakerNumber - 1);
             Outfit outfit = closet.getOutfit(outfitNumber - 1);
             weeklyPlan.setFit(day, sneaker, outfit);
-            System.out.println("Saved " + day + "'s fit.");
+            System.out.println("Saved " + formatDay(day) + "'s fit.");
         }
         catch (IndexOutOfBoundsException e) {
             System.out.println("Invalid closet selection. Please try again.");
@@ -105,9 +110,9 @@ public class FitCheckApp {
             buildOrChangePlan();
         }
         else {
-            String day = chooseDay();
+            Day day = chooseDay();
             weeklyPlan.clearDay(day);
-            System.out.println("Cleared " + day + ".");
+            System.out.println("Cleared " + formatDay(day) + ".");
         }
     }
 
