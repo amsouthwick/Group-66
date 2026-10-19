@@ -70,7 +70,7 @@ public class FitCheckAppTest {
     public void testInvalidMenuChoice() {
         FitCheckApp app = createApp("hello\n9\n3\n");
         assertEquals(3, app.readMenuChoice());
-        assertTrue(output.toString().contains("Please enter a number from 1 to 5."));
+        assertTrue(output.toString().contains("Please enter a number from 1 to 6."));
     }
     /**
      * Tests that the closet displays the available
@@ -127,7 +127,7 @@ public class FitCheckAppTest {
         FitCheckApp app = createApp("abc\n0\n5\n");
         app.run();
         String result = output.toString();
-        assertTrue(result.contains("Please enter a number from 1 to 5."));
+        assertTrue(result.contains("Please enter a number from 1 to 6."));
         assertTrue(result.contains("Goodbye!"));
     }
     /**
@@ -166,4 +166,87 @@ public class FitCheckAppTest {
         FitCheckApp.main(new String[0]);
         assertTrue(output.toString().contains("Goodbye!"));
     }
+
+/**
+ * Tests adding a new sneaker through the menu.
+ */
+@Test
+public void testAddSneaker() {
+    FitCheckApp app = createApp(
+        "6\n1\nPuma\nSuede\nRed\nCasual\n1\n5\n");
+
+    app.run();
+
+    String result = output.toString();
+    assertTrue(result.contains("Sneaker added successfully!"));
+    assertTrue(result.contains("Puma Suede"));
+}
+
+/**
+ * Tests adding a new outfit through the menu.
+ */
+@Test
+public void testAddOutfit() {
+    FitCheckApp app = createApp(
+        "6\n2\nStudy Fit\nBlue\nClass\nCasual\n1\n5\n");
+
+    app.run();
+
+    String result = output.toString();
+    assertTrue(result.contains("Outfit added successfully!"));
+    assertTrue(result.contains("Study Fit"));
+}
+
+/**
+ * Tests removing an existing sneaker.
+ */
+@Test
+public void testRemoveSneaker() {
+    FitCheckApp app = createApp(
+        "6\n3\n1\n1\n5\n");
+
+    app.run();
+
+    String result = output.toString();
+    assertTrue(result.contains("Sneaker removed successfully!"));
+
+    int lastCloset = result.lastIndexOf("Sneakers:");
+    String finalCloset = result.substring(lastCloset);
+
+    assertFalse(finalCloset.contains("Samba"));
+}
+
+/**
+ * Tests removing an existing outfit.
+ */
+@Test
+public void testRemoveOutfit() {
+    FitCheckApp app = createApp(
+        "6\n4\n1\n1\n5\n");
+
+    app.run();
+
+    String result = output.toString();
+    assertTrue(result.contains("Outfit removed successfully!"));
+
+    int lastCloset = result.lastIndexOf("Outfits:");
+    String finalCloset = result.substring(lastCloset);
+
+    assertFalse(finalCloset.contains("Streetwear Fit"));
+}
+
+/**
+ * Tests that the new menu option is accepted.
+ */
+@Test
+public void testManageClosetMenu() {
+    FitCheckApp app = createApp("6\n5\n5\n");
+
+    app.run();
+
+    String result = output.toString();
+    assertTrue(result.contains("MANAGE CLOSET"));
+    assertTrue(result.contains("Goodbye!"));
+}
+
 }
