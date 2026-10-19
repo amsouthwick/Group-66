@@ -1,76 +1,87 @@
-# FitCheck — Project 2 Prototype
+# FitCheck — Project 2 Final Build
 
-## Overview
-FitCheck is a Java console application for planning a Monday–Friday rotation of shoes and outfits. Users can view a preloaded closet, assign a shoe and an outfit to each weekday, view their weekly plan, replace a planned fit, or clear a day.
+FitCheck is a Java console application that helps users organize sneakers and outfits and plan what to wear Monday through Friday.
 
-The `Closet` uses the same generic `LinkedChain<T>` class to store both `Sneaker` and `Outfit` objects (`LinkedChain<Sneaker>` and `LinkedChain<Outfit>`). The application accesses these collections through public methods rather than manipulating linked nodes directly.
+## Features
+
+**Minimum viable product (MVP)**
+- View a starter closet containing seven sneakers and seven outfits.
+- Assign a sneaker and an outfit to a weekday.
+- View the complete weekly plan.
+- Replace a planned fit or clear a day.
+- Handle invalid menu choices and nonnumeric input by prompting again.
+
+**Final-build stretch goals**
+- **Manage Closet:** add or remove sneakers and outfits through menu option 6.
+- **Save and load:** persist the closet and weekly plan between application runs using a local `fitcheck-data.txt` file.
 
 ## How to compile and run
-1. Open the source files in an Eclipse Java project using Java 17.
-2. Place the `.java` files from `src/` in the project's `src` folder (default package).
-3. Run `FitCheckApp.java` as **Java Application**.
-4. Follow the console menu to view the closet, build a plan, view it, replace a fit, clear a day, or exit.
 
-## How to run the tests
-1. In Eclipse, add **JUnit 5** to the project's Java Build Path if it is not already present.
-2. Run each `*Test.java` file using **Run As > JUnit Test**, or run all test classes together.
-3. Verify that tests execute and pass. The test classes are `LinkedChainTest`, `SneakerTest`, `OutfitTest`, `ClosetTest`, `WeeklyPlanTest`, and `FitCheckAppTest`.
+1. Install **Java 17** or a compatible newer JDK and open **Eclipse IDE**.
+2. Import this repository as a Java project, or create a Java project and copy the `.java` files from `src/` into its source folder. The classes use the default package.
+3. Make sure the project's JRE/JDK is configured.
+4. Right-click `FitCheckApp.java` in Eclipse and select **Run As → Java Application**.
+5. Use the numbered console menu:
+   - `1` — View Closet
+   - `2` — Build Weekly Plan
+   - `3` — View Weekly Plan
+   - `4` — Change Weekly Plan
+   - `5` — Exit
+   - `6` — Manage Closet (add/remove sneakers or outfits)
 
+The application starts with the default closet if no valid saved data exists. With persistence enabled, it reads and writes `fitcheck-data.txt` in the program's working directory. This file is created when you make a saved change to the closet or plan. If you want to reset the closet to its original starter items, close the program and remove that save file.
 
+## How to run the JUnit tests
 
-## Reflection
+1. In Eclipse, add **JUnit 5** to the project's Java Build Path (right-click project → **Build Path → Add Libraries → JUnit → JUnit 5**).
+2. In the `src/` folder, run each of the following as **Run As → JUnit Test**, or select them together and run as a JUnit test:
+   - `LinkedChainTest.java`
+   - `SneakerTest.java`
+   - `OutfitTest.java`
+   - `ClosetTest.java`
+   - `WeeklyPlanTest.java`
+   - `FitCheckAppTest.java`
+3. Inspect Eclipse's JUnit results for failures and errors. All tests should pass.
 
-### What changed from the specification?
+## System diagram
 
-Our final FitCheck prototype stayed close to our original specification. We implemented the planned classes, reused `LinkedChain<T>` for both sneakers and outfits, and created a Monday-through-Friday outfit planner. One design decision we made was to use a `Day` enum instead of representing weekdays as strings. This gave us a consistent way to represent Monday through Friday, reduced the chance of invalid day values, and made it easier for `WeeklyPlan` to manage daily selections. We also expanded the predefined closet to seven shoes and seven outfits to give users more combinations, a stretch goal. Additionally, we used a shared method for building and replacing weekly fits to avoid repeating code. Our tests were standardized to JUnit 5 so they could run together. We also kept user-created closet items as a future feature, as permitted by our specification. Overall, these changes helped us simplify the implementation while keeping the core functionality and class responsibilities consistent with our original design.
+![FitCheck system diagram](FitCheck-System-Diagram.png)
 
-### What changed in LinkedChain?
+The diagram above is the team's supplied system overview. `FitCheckApp` controls console interaction and uses `Closet` and `WeeklyPlan`. `Closet` stores sneakers in `LinkedChain<Sneaker>` and outfits in `LinkedChain<Outfit>`, reusing the **same generic `LinkedChain<T>` implementation** for two element types. Each linked chain stores its items in nodes. `WeeklyPlan` uses the `Day` enum and the two arrays `Sneaker[] dailySneakers` and `Outfit[] dailyOutfits` to record daily selections. The diagram is conceptual; method labels in the source code may differ from the earlier specification.
 
-Our team modified the instructor-provided `LinkedChain<T>` class to better support FitCheck. We added a `tail` reference so items could be appended to the end of the chain in O(1) time while maintaining insertion order. We also added indexed insertion and removal methods, allowing elements to be accessed and modified at specific positions. Additionally, we moved the `Node` class into its own file and changed the `add()` method to return `void` instead of `boolean`. We changed the handling of null values so that null additions are ignored rather than throwing an exception. Some methods from the original implementation, including `addToEnd()`, `toArray()`, and `toString()`, were removed or replaced. These changes helped us use the same generic linked chain for both sneakers and outfits while keeping the application's logic separate from the data structure.
+## From specification to final build
 
-### What happened to the unknowns?
-The team resolved how to represent weekdays (`Day` enum) instead of raw strings, how to store different closet item types with one generic chain, and how to handle invalid numeric menu input. The app also demonstrates how `Closet` and `WeeklyPlan` interact with the console menu. Remaining questions include whether to let users manage the closet inventory directly and whether to support saving plans between runs.
+**Deliverable 2 → Deliverable 3 (prototype):** We implemented the planned classes and console workflows, represented weekdays with a `Day` enum instead of raw strings, provided seven starter sneakers and seven starter outfits, and added JUnit 5 tests. We adapted the generic linked-chain implementation for the project's required operations.
 
-### What does not work yet?
-The console menu does not let users add or remove sneakers or outfits from the closet inventory. The plan is not saved after the application closes. Automatic shoe/outfit recommendations and multiple saved rotations are not implemented. (all stretch goals)
+**Deliverable 3 → Deliverable 4 (final):** We added user-driven closet management and a local save feature. This also required changing the valid main-menu range from 1–5 to 1–6 and updating/adding relevant tests.
 
-## Next Steps
+**Challenges and learning:** The team had to coordinate class APIs, choose a generic collection contract before every use was known, handle invalid console input, and update tests as the interface changed. We learned that generics allow type-safe reuse of one implementation, while a stable public API allows classes to work together without accessing linked-list internals.
 
-1. **Ari — finish the MVP interface:** Review the console workflows and, if needed for the final, add user-driven closet inventory changes and corresponding invalid-input handling.
-2. **Aidan — generic collection review:** Compare `LinkedChain<T>` against the instructor-provided version, document any modifications, and check empty-collection and invalid-index behavior.
-3. **Asher — model review:** Confirm `Sneaker` and `Outfit` validation, display, and equality behavior; add tests for any uncovered edge cases.
-4. **Armaan — closet and planner review:** Confirm `Closet` and `WeeklyPlan` behavior when replacing, removing, or clearing items and days, including edge cases.
-5. **All team members — final verification:** Run the entire JUnit 5 suite, manually test bad console input, and confirm the program compiles and has saved data from a fresh run, and lastly implement stretch goals.
+## File-by-file attribution
 
-### Stretch-goal decisions
-- **Committed for consideration after MVP checks:** Allow users to add their own sneakers and outfits through the console menu. Automatic outfit/shoe matching, multiple saved weekly rotations, and day-swapping functionality.
-- None dropped at the moment.
-- **Already present:** Additional shoe and outfit details such as brand, color, style, and occasion.
+The assignments below reflect the team's previously documented primary responsibilities.
 
-### Additional tests to add or verify
-Test empty closet behavior; null sneaker/outfit additions; invalid closet indices; removal of a missing item; swapping a weekday; invalid numeric and nonnumeric menu input; duplicate elements in `LinkedChain`. 
-## Attribution
+| File | Contributor(s) | Contribution and method |
+|---|---|---|
+| `LinkedChain.java` | Aidan | Adapted/reviewed the generic linked-chain implementation and its public API; built on course-provided material |
+| `Node.java` | Aidan | Implemented/reviewed the linked-node structure |
+| `LinkedChainTest.java` | Aidan | Wrote/reviewed tests for generic collection behavior |
+| `Sneaker.java` | Asher | Implemented/reviewed sneaker model |
+| `SneakerTest.java` | Asher | Wrote/reviewed sneaker tests |
+| `Outfit.java` | Asher | Implemented/reviewed outfit model |
+| `OutfitTest.java` | Asher | Wrote/reviewed outfit tests |
+| `Closet.java` | Armaan | Implemented closet operations using `LinkedChain<Sneaker>` and `LinkedChain<Outfit>` |
+| `ClosetTest.java` | Armaan | Wrote/reviewed closet tests |
+| `Day.java` | Armaan | Implemented weekday enum; GenAI-assisted design discussion was disclosed in project source |
+| `WeeklyPlan.java` | Armaan | Implemented and reviewed daily sneaker/outfit arrays and planning methods; GenAI-assisted enum design discussion |
+| `WeeklyPlanTest.java` | Armaan | Wrote/reviewed weekly planner tests |
+| `FitCheckApp.java` | Ari | Implemented/revised console UI, input handling and integration; GenAI-assisted suggestions for closet-management and save/load stretch goals, reviewed and manually tested in Eclipse |
+| `FitCheckAppTest.java` | Ari | Implemented/revised console JUnit tests; GenAI-assisted test suggestions and menu-range updates |
+| `README.md` | All members | Project instructions, documentation, attribution, and disclosure; team review required |
+| `FitCheck-System-Diagram.png` | Team; GenAI-assisted diagram iteration | Final system diagram supplied for the presentation and README; team review required |
 
-| `LinkedChain.java` Aidan - Generic linked-chain implementation and adaptation/review; confirm exact changes to starter
-| `Node.java` Aidan - Node implementation used by `LinkedChain`
-| `LinkedChainTest.java` Aidan - Collection tests
+## GenAI use and ethics reflection
 
-| `Sneaker.java` Asher - Sneaker Class
-| `SneakerTest.java` Asher - Sneaker tests
-| `Outfit.java` Asher - Outfit Class
-| `OutfitTest.java` Asher - Outfit tests
+The team used GenAI tools as assistance, not as a substitute for understanding or reviewing the program. ChatGPT was used for debugging guidance, integration discussions, suggestions for JUnit tests, and save/load code for the stretch goal. Some team members also used Claude for design decisions, debugging, and implementation/test suggestions, as described in their own disclosures. The suggested tests and application changes were reviewed in Eclipse and the new menu behavior was exercised manually by all team members.
 
-| `Closet.java` Armaan - Closet implementation using both generic chains
-| `ClosetTest.java` Armaan - Closet tests
-| `Day.java` Armaan - Weekday enum
-| `WeeklyPlan.java` Armaan - Weekday fit storage, retrieval, replacement, and clearing
-| `WeeklyPlanTest.java` Armaan - Weekly planner tests
-
-| `FitCheckApp.java` Ari - Console menu, input validation, app integration, and preloaded examples
-| `FitCheckAppTest.java` Ari - Console application tests and JUnit 5 integration
-
-| `README.md` All members - Project instructions, reflection, next steps, attribution
-
-
-## GenAI disclosure
-The team used GenAI tools during parts of the project. ChatGPT assisted with discussion of integration/debugging and JUnit 5 test conversion when we all had different JUnit test versions. Claude was used by some team members for design choices, debugging, test suggestions, or implementation support, as described in their source-file disclosures. All team members are responsible for reviewing and understanding the submitted work.
+Over-reliance could leave hidden bugs or cause a teammate to present code they cannot explain. Next time, the team would use GenAI earlier in planning to compare possible approaches and anticipate integration issues, while continuing to check code and behavior independently.
